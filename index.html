@@ -1,61 +1,271 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#090b14" />
-    <title>Nova — Your AI Companion</title>
-    <link rel="stylesheet" href="ai.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Cinematic Intro</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: #050509;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    /* The entire scroll-controlled scene */
+    .scene {
+      position: relative;
+      height: 350vh;
+      background: #050509;
+    }
+
+    /* Keeps the animation on screen while scrolling */
+    .stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: #050509;
+      isolation: isolate;
+    }
+
+    /* The video fills the screen */
+    .eye-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: -2;
+    }
+
+    /* Dark cinematic edges */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.95),
+          transparent 65%
+        ),
+        radial-gradient(
+          ellipse,
+          transparent 20%,
+          rgba(0, 0, 0, 0.65) 100%
+        );
+      pointer-events: none;
+    }
+
+    /* Intro text */
+    .intro {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 13%;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(35px);
+      transition: none;
+    }
+
+    .eyebrow {
+      color: #d9b7ff;
+      text-transform: uppercase;
+      letter-spacing: 0.45em;
+      font-size: 11px;
+      margin-bottom: 18px;
+    }
+
+    .intro h1 {
+      font-size: clamp(42px, 9vw, 110px);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      line-height: 1.05;
+      text-shadow: 0 0 35px rgba(160, 110, 255, 0.5);
+    }
+
+    .intro p {
+      color: #d0cbd9;
+      margin-top: 22px;
+      font-size: clamp(12px, 1.6vw, 16px);
+      letter-spacing: 0.12em;
+    }
+
+    /* Small scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Content after the cinematic intro */
+    .next-section {
+      min-height: 100vh;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      background:
+        radial-gradient(ellipse at center, #20122f, #050509 70%);
+    }
+
+    .next-section h2 {
+      font-size: clamp(30px, 6vw, 65px);
+      font-weight: 400;
+    }
+
+    .next-section p {
+      margin-top: 18px;
+      color: #aaa2b9;
+      line-height: 1.8;
+    }
+  </style>
 </head>
 
 <body>
-    <main class="app">
-        <header>
-            <div class="avatar">✦</div>
-            <div class="brand">
-                <h1>Nova</h1>
-                <p>Your curious, slightly witty AI companion</p>
-            </div>
-            <div class="online"><span class="dot"></span> ONLINE</div>
-        </header>
-        <section class="intro">
-            <div class="orb">
-                <span>✧</span>
-            </div>
-            <h2>Hey there. I'm Nova.</h2>
-            <p>A little curious, a little playful, and always ready to help you figure things out. What's on your mind?
-            </p>
-            <div class="chips">
-                <button class="chip" data-prompt="Tell me something interesting.">✦ Surprise me</button>
-                <button class="chip" data-prompt="Help me brainstorm a cool project.">⌘ Brainstorm ideas</button>
-                <button class="chip" data-prompt="I'm bored. Give me something fun to do.">☻ I'm bored</button>
-            </div>
-        </section>
-        <section class="chat" id="chat" aria-live="polite">
-            <div class="message">
-                <div class="mini">✦</div>
-                <div class="bubble">Welcome in! ✨
 
-                    I'm Nova — your friendly, curious sidekick. I can chat, help you plan things, explain simple topics,
-                    brainstorm, and sprinkle in the occasional terrible pun.
+  <main>
+    <section class="scene" id="scene">
 
-                    One tiny heads-up: I'm running entirely in this webpage, so I use simple built-in responses rather
-                    than a live AI model. But let's make the most of it!<span class="stamp">JUST NOW</span></div>
-            </div>
-        </section>
-        <div class="composer-wrap">
-            <form id="form" class="composer">
-                <textarea id="input" rows="1" placeholder="Message Nova..." aria-label="Message Nova"></textarea>
-                <button class="send" id="send" aria-label="Send message">↑</button>
-            </form>
-            <div class="foot">
-                <span>Made with curiosity · No backend · No API key</span>
-                <button class="clear" id="clear">Clear chat ↺</button>
-            </div>
+      <div class="stage">
+
+        <!-- Replace eyes.mp4 with your video filename -->
+        <video
+          class="eye-video"
+          id="eyeVideo"
+          muted
+          playsinline
+          preload="auto"
+        >
+          <source src="eyes.mp4" type="video/mp4">
+        </video>
+
+        <div class="vignette"></div>
+
+        <div class="intro" id="intro">
+          <div class="eyebrow">A new world awaits</div>
+          <h1>AWAKEN</h1>
+          <p>THE STORY BEGINS WITHIN HER EYES</p>
         </div>
-    </main>
-    <script src="ai.js"></script>
-</body>
 
+        <div class="scroll-hint" id="scrollHint">
+          SCROLL TO AWAKEN ↓
+        </div>
+
+      </div>
+    </section>
+
+    <section class="next-section">
+      <div>
+        <h2>Welcome to her world.</h2>
+        <p>The journey begins here.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    
+        
+const scene = document.getElementById("scene");
+const video = document.getElementById("eyeVideo");
+const intro = document.getElementById("intro");
+const scrollHint = document.getElementById("scrollHint");
+
+let targetTime = 0;
+let ready = false;
+let busy = false;
+
+function clamp(value) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function updateFromScroll() {
+  if (!ready || !video.duration) return;
+
+  const maxScroll = scene.offsetHeight - window.innerHeight;
+  const progress = maxScroll > 0
+    ? clamp(-scene.getBoundingClientRect().top / maxScroll)
+    : 0;
+
+  targetTime = progress * video.duration;
+
+  const titleProgress = clamp((progress - 0.55) / 0.3);
+  intro.style.opacity = titleProgress;
+  intro.style.transform =
+    `translateY(${35 * (1 - titleProgress)}px)`;
+
+  scrollHint.style.opacity = 1 - clamp(progress * 5);
+
+  seekVideo();
+}
+
+function seekVideo() {
+  if (!ready || busy || !video.duration) return;
+
+  // Don't seek while the browser is still processing a previous seek.
+  if (video.seeking) return;
+
+  if (Math.abs(video.currentTime - targetTime) < 0.04) return;
+
+  busy = true;
+  video.currentTime = targetTime;
+}
+
+video.addEventListener("loadeddata", () => {
+  ready = true;
+  updateFromScroll();
+});
+
+video.addEventListener("seeked", () => {
+  busy = false;
+
+  // If scrolling changed during the last seek, catch up.
+  if (Math.abs(video.currentTime - targetTime) >= 0.04) {
+    requestAnimationFrame(seekVideo);
+  }
+});
+
+video.addEventListener("error", () => {
+  console.error("Video failed to load:", video.error);
+});
+
+window.addEventListener("scroll", updateFromScroll, {
+  passive: true
+});
+window.addEventListener("resize", updateFromScroll);
+
+if (video.readyState >= 2) {
+  ready = true;
+  updateFromScroll();
+}
+
+
+  </script>
+
+</body>
 </html>
