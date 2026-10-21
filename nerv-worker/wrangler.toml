@@ -1,7 +1,0 @@
-name = "nerv-ai-worker"
-main = "worker.js"
-compatibility_date = "2026-10-21"
-
-[vars]
-ALLOWED_ORIGIN = "https://vt-vanshika.github.io"
-NVIDIA_MODEL = "openai/gpt-oss-20b"

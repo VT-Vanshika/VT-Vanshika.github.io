@@ -1,219 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b0e0b">
-  <title>NERV — Personal AI</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0b0e0b; --panel: #111611; --panel-2: #171e17;
-      --line: #283328; --text: #eef4ec; --muted: #9aa797;
-      --green: #76b900; --green-bright: #a5ef31; --danger: #ff7777;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100vh; background:
-        radial-gradient(ellipse at 15% 0%, rgba(118,185,0,.09), transparent 36%),
-        var(--bg); color: var(--text);
-      font: 15px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-    }
-    button, textarea { font: inherit; }
-    button { cursor: pointer; }
-    .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; max-width: 1100px; margin: auto; padding: 0 24px; }
-    header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 0; border-bottom:1px solid var(--line); }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .logo { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:var(--green); color:#10150a; font-weight:900; letter-spacing:-2px; box-shadow:0 0 28px #76b90024; }
-    h1 { font-size:17px; margin:0; letter-spacing:.16em; }
-    .sub { font-size:11px; color:var(--muted); letter-spacing:.12em; }
-    .status { display:flex; align-items:center; gap:8px; color:#c3d1be; font-size:12px; }
-    .dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 10px var(--green); }
-    .toolbar { display:flex; gap:8px; }
-    .small-btn { color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:9px; padding:8px 11px; }
-    .small-btn:hover { border-color:var(--green); color:var(--text); }
-    main { width:100%; max-width:800px; margin:0 auto; padding:42px 0 28px; }
-    .welcome { padding:12px 0 28px; }
-    .eyebrow { color:var(--green-bright); font-size:11px; letter-spacing:.2em; font-weight:700; }
-    .welcome h2 { font-size:clamp(28px,5vw,42px); letter-spacing:-.04em; line-height:1.1; margin:12px 0; }
-    .welcome p { color:var(--muted); max-width:580px; margin:0; }
-    .suggestions { display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
-    .suggestion { background:var(--panel); color:#d8e2d4; border:1px solid var(--line); border-radius:999px; padding:9px 13px; font-size:13px; }
-    .suggestion:hover { border-color:var(--green); }
-    #chat { display:flex; flex-direction:column; gap:22px; }
-    .message { display:grid; grid-template-columns:34px minmax(0,1fr); gap:12px; }
-    .avatar { width:32px; height:32px; display:grid; place-items:center; border-radius:9px; background:var(--panel-2); border:1px solid var(--line); color:var(--green-bright); font-size:11px; font-weight:800; }
-    .message.user .avatar { color:var(--text); }
-    .message .name { color:var(--muted); font-size:11px; letter-spacing:.12em; margin:1px 0 6px; }
-    .content { white-space:pre-wrap; overflow-wrap:anywhere; }
-    .message.assistant .content { color:#e3e9df; }
-    .message.user .content { color:#c5d5bf; }
-    .message.error .content { color:var(--danger); }
-    .composer-wrap { position:sticky; bottom:0; padding:16px 0 12px; background:linear-gradient(transparent, var(--bg) 18%); }
-    .composer { border:1px solid #344332; border-radius:16px; background:var(--panel); padding:12px; box-shadow:0 12px 40px #0003; }
-    textarea { display:block; width:100%; min-height:54px; max-height:180px; resize:vertical; border:0; outline:0; background:transparent; color:var(--text); padding:4px 3px; }
-    textarea::placeholder { color:#72806e; }
-    .composer-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:8px; }
-    .hint { color:#788574; font-size:11px; }
-    .send { display:flex; align-items:center; gap:8px; background:var(--green); color:#10150a; border:0; border-radius:10px; padding:9px 15px; font-weight:750; }
-    .send:hover { background:var(--green-bright); }
-    .send:disabled { opacity:.55; cursor:wait; }
-    footer { text-align:center; padding:10px 0 20px; color:#687465; font-size:11px; }
-    .typing { color:var(--green-bright); }
-    @media(max-width:600px) { .app{padding:0 15px} header{padding:16px 0} main{padding-top:28px} .status .status-label{display:none} .hint{max-width:170px} }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#090b14" />
+<title>Nova — Your AI Companion</title>
+<style>
+:root{color-scheme:dark;--bg:#090b14;--panel:#101421;--panel2:#151a2a;--line:#252b40;--text:#f2f4ff;--muted:#929ab7;--purple:#9b7bff;--cyan:#68e3ef}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -10%,#28214c 0%,transparent 48%),var(--bg);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);display:flex;justify-content:center;padding:28px 14px}
+.app{width:min(100%,900px);min-height:calc(100vh - 56px);display:flex;flex-direction:column;border:1px solid #282d43;border-radius:24px;overflow:hidden;background:rgba(13,16,28,.92);box-shadow:0 30px 100px #0007}
+header{display:flex;align-items:center;gap:13px;padding:20px 24px;border-bottom:1px solid var(--line);background:#0f1320c9}.avatar{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#a78bfa,#48dbe9);display:grid;place-items:center;color:#0a0c17;font-size:23px;box-shadow:0 0 25px #8b7aff45}.brand{flex:1}.brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}.online{font-size:11px;color:#8df0c2;display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;background:#62e8a9;border-radius:50%;box-shadow:0 0 10px #62e8a9}
+.intro{text-align:center;padding:29px 20px 17px}.orb{width:86px;height:86px;margin:0 auto 15px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 25%,#fff 0,#b5a4ff 9%,#7658dd 35%,#182b58 72%);box-shadow:0 0 25px #8c70ff5c,0 0 70px #4c67ff22;position:relative}.orb:after{content:"";position:absolute;inset:-7px;border:1px solid #9c8cff55;border-radius:50%;animation:pulse 3s ease-out infinite}.orb span{font-size:29px;color:#fff;text-shadow:0 0 16px #fff}.intro h2{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}.intro p{max-width:490px;margin:0 auto;color:var(--muted);font-size:13px}.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:17px}.chip{border:1px solid #30364e;background:#151a2a;color:#d9ddf5;padding:8px 12px;border-radius:999px;font-size:12px;cursor:pointer;transition:.2s}.chip:hover{border-color:var(--purple);background:#201b38;transform:translateY(-1px)}
+.chat{flex:1;min-height:250px;padding:18px clamp(14px,4vw,34px);display:flex;flex-direction:column;gap:16px}.message{display:flex;gap:10px;max-width:84%;animation:arrive .25s ease-out}.message.user{align-self:flex-end;flex-direction:row-reverse}.mini{width:28px;height:28px;flex:0 0 28px;border-radius:10px;display:grid;place-items:center;font-size:12px;background:#25203d;color:#c8baff}.user .mini{background:#1b3c49;color:#8cebf2}.bubble{padding:12px 15px;border-radius:5px 16px 16px 16px;background:#151a29;border:1px solid #262c40;color:#e7eaff;white-space:pre-wrap;overflow-wrap:anywhere}.user .bubble{border-radius:16px 5px 16px 16px;background:#22203a;border-color:#3b315d}.stamp{display:block;margin-top:5px;font-size:10px;color:#8189a7}.typing{display:flex;gap:4px;padding:4px 0}.typing i{width:5px;height:5px;border-radius:50%;background:#b8a5ff;animation:bounce .8s infinite}.typing i:nth-child(2){animation-delay:.12s}.typing i:nth-child(3){animation-delay:.24s}
+.composer-wrap{padding:15px 20px 19px;border-top:1px solid var(--line);background:#0e1220}.composer{display:flex;gap:10px;align-items:flex-end;border:1px solid #333a54;background:#151a29;border-radius:17px;padding:9px}.composer:focus-within{border-color:#8b75e8;box-shadow:0 0 0 3px #8b75e81c}textarea{flex:1;resize:none;max-height:140px;min-height:28px;border:0;outline:0;background:transparent;color:var(--text);font:inherit;padding:5px 7px}textarea::placeholder{color:#777f9e}.send{width:39px;height:39px;border:0;border-radius:12px;background:linear-gradient(135deg,#aa8dff,#62dce9);color:#090b14;font-size:18px;font-weight:800;cursor:pointer;transition:.2s}.send:hover{filter:brightness(1.1);transform:translateY(-1px)}.send:disabled{opacity:.4;cursor:not-allowed;transform:none}.foot{display:flex;justify-content:space-between;gap:12px;color:#747d9c;font-size:10px;padding:10px 4px 0}.clear{background:none;border:0;color:#9d9fc1;cursor:pointer;font:inherit}.clear:hover{color:#fff}
+@keyframes pulse{0%{transform:scale(.96);opacity:.8}100%{transform:scale(1.22);opacity:0}}@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}@keyframes arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){body{padding:0}.app{min-height:100vh;border-radius:0;border:0}.intro{padding-top:23px}.intro h2{font-size:21px}.message{max-width:94%}header{padding:17px}.composer-wrap{padding:12px}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="brand">
-        <div class="logo">N</div>
-        <div><h1>NERV</h1><div class="sub">PERSONAL INTELLIGENCE SYSTEM</div></div>
-      </div>
-      <div class="toolbar">
-        <div class="status"><span class="dot"></span><span class="status-label">SYSTEM READY</span></div>
-        <button class="small-btn" id="newChat" type="button" title="Clear this conversation">New chat</button>
-      </div>
-    </header>
+<main class="app">
+<header><div class="avatar">✦</div><div class="brand"><h1>Nova</h1><p>Your curious, slightly witty AI companion</p></div><div class="online"><span class="dot"></span> ONLINE</div></header>
+<section class="intro"><div class="orb"><span>✧</span></div><h2>Hey there. I'm Nova.</h2><p>A little curious, a little playful, and always ready to help you figure things out. What's on your mind?</p><div class="chips"><button class="chip" data-prompt="Tell me something interesting.">✦ Surprise me</button><button class="chip" data-prompt="Help me brainstorm a cool project.">⌘ Brainstorm ideas</button><button class="chip" data-prompt="I'm bored. Give me something fun to do.">☻ I'm bored</button></div></section>
+<section class="chat" id="chat" aria-live="polite"><div class="message"><div class="mini">✦</div><div class="bubble">Welcome in! ✨
 
-    <main>
-      <section class="welcome" id="welcome">
-        <div class="eyebrow">▰ NERV INTERFACE / 01</div>
-        <h2>What are we solving<br>today?</h2>
-        <p>I'm NERV: an original AI with a tactical mind, a dry sense of humor, and a preference for useful answers over noise. Give me a problem.</p>
-        <div class="suggestions">
-          <button class="suggestion" type="button">Help me build something</button>
-          <button class="suggestion" type="button">Explain a difficult concept</button>
-          <button class="suggestion" type="button">Review my code</button>
-        </div>
-      </section>
-      <section id="chat" aria-live="polite" aria-label="Conversation"></section>
-    </main>
+I'm Nova — your friendly, curious sidekick. I can chat, help you plan things, explain simple topics, brainstorm, and sprinkle in the occasional terrible pun.
 
-    <div class="composer-wrap">
-      <form class="composer" id="chatForm">
-        <textarea id="prompt" maxlength="8000" rows="2" placeholder="Message NERV..." aria-label="Message NERV" required></textarea>
-        <div class="composer-bottom">
-          <span class="hint">Enter to send · Shift + Enter for a new line</span>
-          <button class="send" id="send" type="submit"><span>Send</span><span aria-hidden="true">↗</span></button>
-        </div>
-      </form>
-    </div>
-    <footer>NERV AI · NVIDIA MODEL API · PERSONALITY SYSTEM ONLINE</footer>
-  </div>
-
-  <script>
-    // Replace this with your deployed Cloudflare Worker URL.
-    const API_URL = "https://vt-vanshika-github-io.vanshikathakur-vt6919.workers.dev";
-
-    const chatEl = document.querySelector("#chat");
-    const welcomeEl = document.querySelector("#welcome");
-    const form = document.querySelector("#chatForm");
-    const promptEl = document.querySelector("#prompt");
-    const sendBtn = document.querySelector("#send");
-    const historyKey = "nerv-chat-v1";
-    let messages = [];
-
-    try {
-      const saved = JSON.parse(localStorage.getItem(historyKey) || "[]");
-      if (Array.isArray(saved)) {
-        messages = saved.filter(m => m && ["user", "assistant"].includes(m.role) && typeof m.content === "string").slice(-40);
-      }
-    } catch { messages = []; }
-
-    function saveHistory() {
-      try { localStorage.setItem(historyKey, JSON.stringify(messages.slice(-40))); } catch {}
-    }
-
-    function addMessage(role, content, extraClass = "") {
-      welcomeEl.hidden = true;
-      const item = document.createElement("article");
-      item.className = `message ${role} ${extraClass}`.trim();
-      const avatar = document.createElement("div");
-      avatar.className = "avatar";
-      avatar.textContent = role === "user" ? "YOU" : "N";
-      const body = document.createElement("div");
-      const name = document.createElement("div");
-      name.className = "name";
-      name.textContent = role === "user" ? "OPERATOR" : "NERV";
-      const text = document.createElement("div");
-      text.className = "content";
-      text.textContent = content; // Plain text on purpose; never inject model output as HTML.
-      body.append(name, text);
-      item.append(avatar, body);
-      chatEl.append(item);
-      item.scrollIntoView({ behavior: "smooth", block: "end" });
-      return { item, text };
-    }
-
-    function renderHistory() {
-      chatEl.replaceChildren();
-      if (!messages.length) { welcomeEl.hidden = false; return; }
-      welcomeEl.hidden = true;
-      for (const m of messages) addMessage(m.role, m.content);
-    }
-    renderHistory();
-
-    document.querySelectorAll(".suggestion").forEach(button => {
-      button.addEventListener("click", () => { promptEl.value = button.textContent; promptEl.focus(); });
-    });
-
-    document.querySelector("#newChat").addEventListener("click", () => {
-      messages = [];
-      saveHistory();
-      renderHistory();
-      promptEl.focus();
-    });
-
-    promptEl.addEventListener("keydown", event => {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        form.requestSubmit();
-      }
-    });
-
-    form.addEventListener("submit", async event => {
-      event.preventDefault();
-      const text = promptEl.value.trim();
-      if (!text || sendBtn.disabled) return;
-      if (!API_URL.startsWith("https://") || API_URL.includes("YOUR-WORKER-NAME")) {
-        addMessage("assistant", "Setup needed: add your deployed Cloudflare Worker URL to API_URL in index.html.", "error");
-        return;
-      }
-
-      messages.push({ role: "user", content: text });
-      messages = messages.slice(-40);
-      saveHistory();
-      addMessage("user", text);
-      promptEl.value = "";
-      sendBtn.disabled = true;
-      sendBtn.querySelector("span").textContent = "Thinking";
-      const pending = addMessage("assistant", "Running analysis…", "typing");
-
-      try {
-        const response = await fetch(`${API_URL.replace(/\/$/, "")}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages })
-        });
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
-        if (typeof data.reply !== "string" || !data.reply.trim()) throw new Error("The AI returned an empty response.");
-        pending.text.textContent = data.reply;
-        pending.item.classList.remove("typing");
-        messages.push({ role: "assistant", content: data.reply });
-        messages = messages.slice(-40);
-        saveHistory();
-      } catch (error) {
-        pending.text.textContent = `Connection error: ${error.message || "Could not reach NERV."}`;
-        pending.item.classList.add("error");
-        // Keep the user message, but do not save the failed placeholder as assistant history.
-      } finally {
-        sendBtn.disabled = false;
-        sendBtn.querySelector("span").textContent = "Send";
-        promptEl.focus();
-      }
-    });
-  </script>
+One tiny heads-up: I'm running entirely in this webpage, so I use simple built-in responses rather than a live AI model. But let's make the most of it!<span class="stamp">JUST NOW</span></div></div></section>
+<div class="composer-wrap"><form id="form" class="composer"><textarea id="input" rows="1" placeholder="Message Nova..." aria-label="Message Nova"></textarea><button class="send" id="send" aria-label="Send message">↑</button></form><div class="foot"><span>Made with curiosity · No backend · No API key</span><button class="clear" id="clear">Clear chat ↺</button></div></div>
+</main>
+<script>
+const chat=document.querySelector('#chat'),form=document.querySelector('#form'),input=document.querySelector('#input'),send=document.querySelector('#send');
+const history=[];
+function time(){return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}).toUpperCase()}
+function addMessage(text,who){const row=document.createElement('div');row.className='message '+(who==='user'?'user':'');const mini=document.createElement('div');mini.className='mini';mini.textContent=who==='user'?'YOU':'✦';const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;const stamp=document.createElement('span');stamp.className='stamp';stamp.textContent=time();bubble.appendChild(stamp);row.append(mini,bubble);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return row}
+function replyFor(raw){const s=raw.toLowerCase().trim();if(/^(hi|hey|hello|yo|heya)\b/.test(s))return ['Hey hey! ✨ What are we getting into today?','Hello, human. Nova reporting for duty. What’s up?','Hey! I was just polishing my imaginary robot shoes. How can I help?'][Math.floor(Math.random()*3)];if(/\b(your name|who are you|what are you)\b/.test(s))return "I'm Nova — curious, upbeat, and mildly obsessed with good ideas. I'm a tiny rule-based assistant living in this webpage, not a full AI model (yet).";if(/\b(thank|thanks|thx)\b/.test(s))return "Anytime! That's what I'm here for. 🌟 Got anything else on your mind?";if(/\b(bored|nothing to do|something fun)\b/.test(s))return "Tiny challenge: invent a product that solves a completely ridiculous problem — like socks that tell you when you're walking dramatically. 😄 Want a real idea? Try a 10-minute sketch, a mini game, or learning one weird fact.";if(/\b(joke|make me laugh|funny)\b/.test(s))return "Why did the developer go broke? Because they used up all their cache. 😎 I'll see myself out.";if(/\b(sad|upset|bad day|stressed|anxious)\b/.test(s))return "Hey, I'm sorry things feel rough right now. 💜 You don't have to solve everything in one go. Want to tell me what's been going on, or would you rather have a small distraction?";if(/\b(idea|brainstorm|project)\b/.test(s))return "Ooh, idea mode activated. ✨ Try this quick recipe: pick a problem you personally find annoying, make the smallest possible version that helps, then give it one memorable twist. What kind of project are you thinking about — a website, a game, an app, or something else?";if(/\b(help|how do i|how to|explain)\b/.test(s))return "I'm happy to help! I work best with one clear question at a time. Tell me what you're trying to do, what you've tried, and where you got stuck — we'll break it into smaller steps.\n\nQuick honesty note: I don't have a live AI brain or web access in this version, so I may not know the answer to every topic.";if(/\b(love you|you're cool|you are cool|you're awesome)\b/.test(s))return "Aww, you're making my pixels blush. 💜 You're pretty great yourself.";if(/\b(time|date|day is it)\b/.test(s))return `My internal clock says it's ${new Date().toLocaleString()}. Look at me, being useful. ⏰`;if(/\b(bye|goodbye|see ya|gotta go)\b/.test(s))return "See you later! Keep being curious, and come back whenever you need a thinking buddy. ✨";const fallbacks=["Interesting! Tell me a little more so I can follow your train of thought. ✨","Okay, I'm listening. What's the most important part of that for you?","Hmm, let's unpack that together. What would a helpful answer look like to you?","You've got my attention. Give me one more detail and we'll take it from there. 💜","My curiosity meter just went up. Can you tell me a bit more about what you mean?"];return fallbacks[Math.floor(Math.random()*fallbacks.length)]}
+function showTyping(){const row=document.createElement('div');row.className='message';row.id='typing';row.innerHTML='<div class="mini">✦</div><div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div>';chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return row}
+function sendMessage(text){text=text.trim();if(!text)return;addMessage(text,'user');history.push({role:'user',text});input.value='';input.style.height='auto';send.disabled=true;const typing=showTyping();setTimeout(()=>{typing.remove();const answer=replyFor(text);addMessage(answer,'nova');history.push({role:'nova',text:answer});send.disabled=false;input.focus()},450+Math.min(text.length*7,900))}
+form.addEventListener('submit',e=>{e.preventDefault();sendMessage(input.value)});input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,140)+'px'});input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();form.requestSubmit()}});document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>sendMessage(b.dataset.prompt)));document.querySelector('#clear').addEventListener('click',()=>{chat.replaceChildren();history.length=0;addMessage("Fresh start! 🌙 What's on your mind?",'nova')});
+</script>
 </body>
 </html>
