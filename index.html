@@ -1,24 +1,219 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NVIDIA AI Persona Chat</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0e0b">
+  <title>NERV — Personal AI</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0e0b; --panel: #111611; --panel-2: #171e17;
+      --line: #283328; --text: #eef4ec; --muted: #9aa797;
+      --green: #76b900; --green-bright: #a5ef31; --danger: #ff7777;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background:
+        radial-gradient(ellipse at 15% 0%, rgba(118,185,0,.09), transparent 36%),
+        var(--bg); color: var(--text);
+      font: 15px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    button, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; max-width: 1100px; margin: auto; padding: 0 24px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 0; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .logo { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:var(--green); color:#10150a; font-weight:900; letter-spacing:-2px; box-shadow:0 0 28px #76b90024; }
+    h1 { font-size:17px; margin:0; letter-spacing:.16em; }
+    .sub { font-size:11px; color:var(--muted); letter-spacing:.12em; }
+    .status { display:flex; align-items:center; gap:8px; color:#c3d1be; font-size:12px; }
+    .dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 10px var(--green); }
+    .toolbar { display:flex; gap:8px; }
+    .small-btn { color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:9px; padding:8px 11px; }
+    .small-btn:hover { border-color:var(--green); color:var(--text); }
+    main { width:100%; max-width:800px; margin:0 auto; padding:42px 0 28px; }
+    .welcome { padding:12px 0 28px; }
+    .eyebrow { color:var(--green-bright); font-size:11px; letter-spacing:.2em; font-weight:700; }
+    .welcome h2 { font-size:clamp(28px,5vw,42px); letter-spacing:-.04em; line-height:1.1; margin:12px 0; }
+    .welcome p { color:var(--muted); max-width:580px; margin:0; }
+    .suggestions { display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
+    .suggestion { background:var(--panel); color:#d8e2d4; border:1px solid var(--line); border-radius:999px; padding:9px 13px; font-size:13px; }
+    .suggestion:hover { border-color:var(--green); }
+    #chat { display:flex; flex-direction:column; gap:22px; }
+    .message { display:grid; grid-template-columns:34px minmax(0,1fr); gap:12px; }
+    .avatar { width:32px; height:32px; display:grid; place-items:center; border-radius:9px; background:var(--panel-2); border:1px solid var(--line); color:var(--green-bright); font-size:11px; font-weight:800; }
+    .message.user .avatar { color:var(--text); }
+    .message .name { color:var(--muted); font-size:11px; letter-spacing:.12em; margin:1px 0 6px; }
+    .content { white-space:pre-wrap; overflow-wrap:anywhere; }
+    .message.assistant .content { color:#e3e9df; }
+    .message.user .content { color:#c5d5bf; }
+    .message.error .content { color:var(--danger); }
+    .composer-wrap { position:sticky; bottom:0; padding:16px 0 12px; background:linear-gradient(transparent, var(--bg) 18%); }
+    .composer { border:1px solid #344332; border-radius:16px; background:var(--panel); padding:12px; box-shadow:0 12px 40px #0003; }
+    textarea { display:block; width:100%; min-height:54px; max-height:180px; resize:vertical; border:0; outline:0; background:transparent; color:var(--text); padding:4px 3px; }
+    textarea::placeholder { color:#72806e; }
+    .composer-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:8px; }
+    .hint { color:#788574; font-size:11px; }
+    .send { display:flex; align-items:center; gap:8px; background:var(--green); color:#10150a; border:0; border-radius:10px; padding:9px 15px; font-weight:750; }
+    .send:hover { background:var(--green-bright); }
+    .send:disabled { opacity:.55; cursor:wait; }
+    footer { text-align:center; padding:10px 0 20px; color:#687465; font-size:11px; }
+    .typing { color:var(--green-bright); }
+    @media(max-width:600px) { .app{padding:0 15px} header{padding:16px 0} main{padding-top:28px} .status .status-label{display:none} .hint{max-width:170px} }
+  </style>
 </head>
 <body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">N</div>
+        <div><h1>NERV</h1><div class="sub">PERSONAL INTELLIGENCE SYSTEM</div></div>
+      </div>
+      <div class="toolbar">
+        <div class="status"><span class="dot"></span><span class="status-label">SYSTEM READY</span></div>
+        <button class="small-btn" id="newChat" type="button" title="Clear this conversation">New chat</button>
+      </div>
+    </header>
 
-    <div class="container">
-        <h1>NVIDIA AI Persona Chat</h1>
-
-        <div id="chat-box"></div>
-
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Say something to the hacker..." onkeypress="handleKeyPress(event)">
-            <button onclick="sendMessage()">Send</button>
+    <main>
+      <section class="welcome" id="welcome">
+        <div class="eyebrow">▰ NERV INTERFACE / 01</div>
+        <h2>What are we solving<br>today?</h2>
+        <p>I'm NERV: an original AI with a tactical mind, a dry sense of humor, and a preference for useful answers over noise. Give me a problem.</p>
+        <div class="suggestions">
+          <button class="suggestion" type="button">Help me build something</button>
+          <button class="suggestion" type="button">Explain a difficult concept</button>
+          <button class="suggestion" type="button">Review my code</button>
         </div>
-    </div>
+      </section>
+      <section id="chat" aria-live="polite" aria-label="Conversation"></section>
+    </main>
 
-    <script src="script.js"></script>
+    <div class="composer-wrap">
+      <form class="composer" id="chatForm">
+        <textarea id="prompt" maxlength="8000" rows="2" placeholder="Message NERV..." aria-label="Message NERV" required></textarea>
+        <div class="composer-bottom">
+          <span class="hint">Enter to send · Shift + Enter for a new line</span>
+          <button class="send" id="send" type="submit"><span>Send</span><span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </div>
+    <footer>NERV AI · NVIDIA MODEL API · PERSONALITY SYSTEM ONLINE</footer>
+  </div>
+
+  <script>
+    // Replace this with your deployed Cloudflare Worker URL.
+    const API_URL = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+
+    const chatEl = document.querySelector("#chat");
+    const welcomeEl = document.querySelector("#welcome");
+    const form = document.querySelector("#chatForm");
+    const promptEl = document.querySelector("#prompt");
+    const sendBtn = document.querySelector("#send");
+    const historyKey = "nerv-chat-v1";
+    let messages = [];
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(historyKey) || "[]");
+      if (Array.isArray(saved)) {
+        messages = saved.filter(m => m && ["user", "assistant"].includes(m.role) && typeof m.content === "string").slice(-40);
+      }
+    } catch { messages = []; }
+
+    function saveHistory() {
+      try { localStorage.setItem(historyKey, JSON.stringify(messages.slice(-40))); } catch {}
+    }
+
+    function addMessage(role, content, extraClass = "") {
+      welcomeEl.hidden = true;
+      const item = document.createElement("article");
+      item.className = `message ${role} ${extraClass}`.trim();
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = role === "user" ? "YOU" : "N";
+      const body = document.createElement("div");
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = role === "user" ? "OPERATOR" : "NERV";
+      const text = document.createElement("div");
+      text.className = "content";
+      text.textContent = content; // Plain text on purpose; never inject model output as HTML.
+      body.append(name, text);
+      item.append(avatar, body);
+      chatEl.append(item);
+      item.scrollIntoView({ behavior: "smooth", block: "end" });
+      return { item, text };
+    }
+
+    function renderHistory() {
+      chatEl.replaceChildren();
+      if (!messages.length) { welcomeEl.hidden = false; return; }
+      welcomeEl.hidden = true;
+      for (const m of messages) addMessage(m.role, m.content);
+    }
+    renderHistory();
+
+    document.querySelectorAll(".suggestion").forEach(button => {
+      button.addEventListener("click", () => { promptEl.value = button.textContent; promptEl.focus(); });
+    });
+
+    document.querySelector("#newChat").addEventListener("click", () => {
+      messages = [];
+      saveHistory();
+      renderHistory();
+      promptEl.focus();
+    });
+
+    promptEl.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const text = promptEl.value.trim();
+      if (!text || sendBtn.disabled) return;
+      if (!API_URL.startsWith("https://") || API_URL.includes("YOUR-WORKER-NAME")) {
+        addMessage("assistant", "Setup needed: add your deployed Cloudflare Worker URL to API_URL in index.html.", "error");
+        return;
+      }
+
+      messages.push({ role: "user", content: text });
+      messages = messages.slice(-40);
+      saveHistory();
+      addMessage("user", text);
+      promptEl.value = "";
+      sendBtn.disabled = true;
+      sendBtn.querySelector("span").textContent = "Thinking";
+      const pending = addMessage("assistant", "Running analysis…", "typing");
+
+      try {
+        const response = await fetch(`${API_URL.replace(/\/$/, "")}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+        if (typeof data.reply !== "string" || !data.reply.trim()) throw new Error("The AI returned an empty response.");
+        pending.text.textContent = data.reply;
+        pending.item.classList.remove("typing");
+        messages.push({ role: "assistant", content: data.reply });
+        messages = messages.slice(-40);
+        saveHistory();
+      } catch (error) {
+        pending.text.textContent = `Connection error: ${error.message || "Could not reach NERV."}`;
+        pending.item.classList.add("error");
+        // Keep the user message, but do not save the failed placeholder as assistant history.
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.querySelector("span").textContent = "Send";
+        promptEl.focus();
+      }
+    });
+  </script>
 </body>
 </html>

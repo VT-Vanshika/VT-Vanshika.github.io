@@ -1,0 +1,9 @@
+name = "nerv-ai-worker"
+main = "worker.js"
+compatibility_date = "2026-10-21"
+
+# Replace this with the exact origin of your GitHub Pages site.
+# Example: https://YOUR-USERNAME.github.io
+[vars]
+ALLOWED_ORIGIN = "https://YOUR-USERNAME.github.io"
+NVIDIA_MODEL = "openai/gpt-oss-20b"
